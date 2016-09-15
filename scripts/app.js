@@ -1,11 +1,15 @@
+(function () {
+'use strict';
+
 angular.module('LunchChecker', [])
 .controller('LunchController', LunchController);
 
+LunchController.$inject = ['$scope'];
 function LunchController($scope) {
+
 	$scope.checkLunch = function() {
-		var lunch = $scope.lunch;
-		if (lunch) {
-			$scope.message = getMessage(lunch);
+		if ($scope.lunch) {
+			$scope.message = getMessage($scope.lunch);
 		} else {
 			$scope.message = "Please enter data first";
 		}
@@ -13,6 +17,7 @@ function LunchController($scope) {
 
 	function getMessage(lunch) {
 		var lunchItems = lunch.split(",");
+		lunchItems = removeEmpty(lunchItems);
 		if (lunchItems.length <= 3) {
 			return "Enjoy!";
 		} else {
@@ -20,4 +25,16 @@ function LunchController($scope) {
 		}
 	}
 
+	function removeEmpty(array) {
+		var notEmptyArray = [];
+		for (var i = 0; i < array.length; i++) {
+			if (array[i] && array[i].trim()) {
+				notEmptyArray.push(array[i]);
+			}
+		}
+		return notEmptyArray;
+	}
+
 }
+
+})();
